@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>오늘의 로또 & 운세</title>
+</head>
+<body style="text-align:center;font-family:sans-serif;">
+<h1 style="font-size:40px;">🎰 로또 번호</h1>
+<button style="font-size:28px;padding:15px 30px;" onclick="generate()">번호 생성</button>
+<h2 id="result" style="font-size:32px;"></h2>
+
+<h1 style="font-size:36px;">🔮 오늘의 운세</h1>
+<button style="font-size:26px;padding:12px 28px;" onclick="fortune()">운세 보기</button>
+<p id="fortune" style="font-size:28px;"></p>
+
+<script>
+function generate() {
+    let nums = [];
+    while (nums.length < 6) {
+        let n = Math.floor(Math.random() * 45) + 1;
+        if (!nums.includes(n)) nums.push(n);
+    }
+    nums.sort((a,b)=>a-b);
+    document.getElementById("result").innerText = nums.join(", ");
+}
+
+const fortunes = [
+ "오늘은 좋은 기운이 있습니다 🍀",
+ "사람 만나는 복이 있는 날입니다",
+ "작은 기쁨이 여러 번 생겨요",
+ "기다리던 소식이 올 수 있어요",
+ "무리하지 말고 천천히 가세요",
+ "웃을 일이 생깁니다 😄",
+ "금전운은 평범, 마음운은 좋음",
+ "몸 좀 쉬어 주세요",
+ "좋은 생각이 떠오릅니다",
+ "엄마,아빠 사랑해용 ❤️💕"
+];
+
+function fortune() {
+    let f = fortunes[Math.floor(Math.random() * fortunes.length)];
+    document.getElementById("fortune").innerText = f;
+}
+</script>
+</body>
+
+</html>
