@@ -6,7 +6,8 @@
 <title>오늘의 로또 & 운세</title>
 </head>
 <body style="text-align:center;font-family:sans-serif;">
-<h1 style="font-size:40px;">🎰 로또 번호 (역대 빈도 기준)</h1>
+
+<h1 style="font-size:40px;">🎰 랜덤 로또 번호</h1>
 <button style="font-size:28px;padding:15px 30px;" onclick="generate()">번호 생성</button>
 <h2 id="result" style="font-size:32px;"></h2>
 
@@ -14,27 +15,25 @@
 <button style="font-size:26px;padding:12px 28px;" onclick="fortune()">운세 보기</button>
 <p id="fortune" style="font-size:28px;"></p>
 
-<button onclick="getLottoFromServer()">통계 기반 번호</button>
-<h2 id="serverResult"></h2>
-
+<h1 style="font-size:36px;">📊 통계 기반 로또 번호</h1>
+<button id="serverBtn" style="font-size:26px;padding:12px 28px;">번호 생성</button>
+<h2 id="serverResult" style="font-size:32px;"></h2>
 
 <script>
-// 역대 많이 나온 번호들 예시 (통계 기반)
-const frequentNums = [34, 12, 13, 27, 18, 33, 40, 37, 7, 6, 1, 4];
-
+// ===== 랜덤 로또 번호 =====
 function generate() {
-    let nums = [];
-    let pool = frequentNums.slice(); // 사본 생성
-    while (nums.length < 6 && pool.length > 0) {
-        // 랜덤으로 뽑아 6개 생성
-        let idx = Math.floor(Math.random() * pool.length);
+    const pool = Array.from({length: 45}, (_, i) => i + 1); // 1~45
+    const nums = [];
+    while (nums.length < 6 && pool.length) {
+        const idx = Math.floor(Math.random() * pool.length);
         nums.push(pool[idx]);
-        pool.splice(idx, 1);
+        pool.splice(idx,1); // 중복 제거
     }
     nums.sort((a,b)=>a-b);
     document.getElementById("result").innerText = nums.join(", ");
 }
 
+// ===== 오늘의 운세 =====
 const fortunes = [
  "오늘은 좋은 기운이 있습니다 🍀",
  "사람 만나는 복이 있는 날입니다",
@@ -45,31 +44,36 @@ const fortunes = [
  "금전운은 평범, 마음운은 좋음",
  "몸 좀 쉬어 주세요",
  "좋은 생각이 떠오릅니다",
- "엄마,아빠 사랑해용 ❤️💕"
+ "엄마,아빠 사랑해용❤️💕",
+ "수아 사랑해용😉" 
 ];
 
 function fortune() {
-    let f = fortunes[Math.floor(Math.random() * fortunes.length)];
+    const f = fortunes[Math.floor(Math.random() * fortunes.length)];
     document.getElementById("fortune").innerText = f;
 }
 
-async function getLottoFromServer() {
+// ===== 통계 기반 번호 =====
+const topNumbers = [34, 12, 13, 27, 18, 33, 40, 37, 7, 6, 1, 4, 22, 28, 17, 9, 10, 5, 30, 31];
+
+// fetch 부분 대신 바로 사용
+function getLottoFromServer() {
     const resultEl = document.getElementById("serverResult");
     resultEl.innerText = "⏳ 로딩 중… 잠시만 기다려주세요";
 
-    try {
-        const res = await fetch("/.netlify/functions/lottoStats");
-        if (!res.ok) throw new Error("서버 오류");
-
-        const data = await res.json();
-        resultEl.innerText = "🎯 통계 기반 번호: " + data.numbers.join(", ");
-    } catch (err) {
-        console.error(err);
-        resultEl.innerText = "❌ 번호를 가져오지 못했습니다. 나중에 다시 시도하세요.";
-    }
+    setTimeout(() => {
+        const pool = [...topNumbers];
+        const pick = [];
+        while (pick.length < 6 && pool.length) {
+            const idx = Math.floor(Math.random() * pool.length);
+            pick.push(pool[idx]);
+            pool.splice(idx, 1);
+        }
+        pick.sort((a,b)=>a-b);
+        resultEl.innerText = "🎯 통계 기반 번호: " + pick.join(", ");
+    }, 500);
 }
 
-// 버튼 클릭 이벤트 연결
 document.getElementById("serverBtn").addEventListener("click", getLottoFromServer);
 </script>
 </body>
