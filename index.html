@@ -54,10 +54,23 @@ function fortune() {
 }
 
 async function getLottoFromServer() {
-    const res = await fetch("/.netlify/functions/lottoStats");
-    const data = await res.json();
-    document.getElementById("serverResult").innerText = data.numbers.join(", ");
+    const resultEl = document.getElementById("serverResult");
+    resultEl.innerText = "⏳ 로딩 중… 잠시만 기다려주세요";
+
+    try {
+        const res = await fetch("/.netlify/functions/lottoStats");
+        if (!res.ok) throw new Error("서버 오류");
+
+        const data = await res.json();
+        resultEl.innerText = "🎯 통계 기반 번호: " + data.numbers.join(", ");
+    } catch (err) {
+        console.error(err);
+        resultEl.innerText = "❌ 번호를 가져오지 못했습니다. 나중에 다시 시도하세요.";
+    }
 }
+
+// 버튼 클릭 이벤트 연결
+document.getElementById("serverBtn").addEventListener("click", getLottoFromServer);
 </script>
 </body>
 </html>
