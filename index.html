@@ -4,20 +4,50 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>오늘의 로또 & 운세</title>
+
+<style>
+h1 {
+  font-size:30px;
+}
+
+button {
+	font-size:20px;
+	padding:15px 30px;
+}
+
+#mapBtn {
+  background: #27ae60;
+  color: white;
+  padding: 10px 14px;
+  border: none;
+  border-radius: 20px;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+}
+</style>
+
 </head>
 <body style="text-align:center;font-family:sans-serif;">
 
-<h1 style="font-size:40px;">🎰 랜덤 로또 번호</h1>
-<button style="font-size:28px;padding:15px 30px;" onclick="generate()">번호 생성</button>
-<h2 id="result" style="font-size:32px;"></h2>
+<h1>🎰 랜덤 로또 번호</h1>
+<button onclick="generate()">번호 생성</button>
+<h2 id="result" style="font-size:20px;"></h2>
 
-<h1 style="font-size:36px;">🔮 오늘의 운세</h1>
-<button style="font-size:26px;padding:12px 28px;" onclick="fortune()">운세 보기</button>
-<p id="fortune" style="font-size:28px;"></p>
+<h1>🔮 오늘의 운세</h1>
+<button onclick="fortune()">운세 보기</button>
+<p id="fortune" style="font-size:20px;"></p>
 
-<h1 style="font-size:36px;">📊 통계 기반 로또 번호</h1>
-<button id="serverBtn" style="font-size:26px;padding:12px 28px;">번호 생성</button>
-<h2 id="serverResult" style="font-size:32px;"></h2>
+<h1>📊 통계 기반 로또 번호</h1>
+<button id="serverBtn">번호 생성</button>
+<h2 id="serverResult" style="font-size:20px;"></h2>
+
+<h1>🤞행운을 빕니다🤞</h1>
+<button style="font-size:20px;padding:15px 30px;" onclick="window.open('https://www.dhlottery.co.kr/guide/wnrGuide', '_blank')">
+    당첨자 가이드 보기
+</button><br/><br/>
+
+<button id="mapBtn">🗺 지도로 돌아가기</button>
 
 <script>
 // ===== 랜덤 로또 번호 =====
@@ -75,6 +105,15 @@ function getLottoFromServer() {
 }
 
 document.getElementById("serverBtn").addEventListener("click", getLottoFromServer);
+
+//지도로 돌아가기 버튼
+document.addEventListener('DOMContentLoaded', () => {
+  const mapBtn = document.getElementById('mapBtn');  
+
+  mapBtn.addEventListener('click', () => {
+    window.location.href = "https://cntndms12.github.io/lotto-map/";
+  });
+});
 </script>
 </body>
 </html>
